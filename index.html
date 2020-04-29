@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<style>
+html, body
+{
+width:100%;
+height:100%;
+padding:0;
+margin: 0;
+}
+
+.zoom-img {
+  cursor: move;
+  height: 100%;
+  margin: auto;
+  display:block;
+  position:relative;
+}
+
+#zoom-container {
+  overflow: hidden;
+  background: red;
+  flex-grow : 1;
+  margin:0;padding:0
+  
+  flex-flow: row;
+}
+
+.button {
+  width: 100px;
+  height: 50px;
+}
+
+.parent {
+background: black;
+  position: relative;
+  top: 0;
+  left: 0;
+    height: 100%;
+ flex-grow:1
+ 
+  
+}
+
+#image2 {
+}
+
+#image1
+{
+opacity:0.5;
+
+}
+</style>
+</head>
+<body id="fullbody">
+<div style="height:100%;display: flex;flex-flow: column;margin:0;padding:0">
+	<div id="zoom-container" style="display: flex;">   
+		  	<div id="prListDiv" style="display:none" style="width:200px;position: relative;height:100%">
+
+			<select  id="prList" style="display: block; height:100%" id="cars" size="55">
+
+</select>
+		</div>
+		<div class="parent">
+		  <div style="position:absolute; top: 50%;height:100%;left: 50%;transform: translate(-50%, -50%)">
+		  <img ondragstart="return false" id="image2" class="zoom-img" src="" />
+		  </div>
+		  <div id="maskContainer" style="position:absolute; top: 50%;height:100%;left: 50%;transform: translate(-50%, -50%)">
+			<img ondragstart="return false" id="image1" class="zoom-img" src="" />
+		  </div>
+		</div>
+		
+
+	</div>	
+	
+	
+	<div style="height:30px;margin:0;padding:0;display: flex;flex-flow: row;">
+		<div style="width:60px;margin:0;padding:0">
+			<input id="index" style="height:30px;width:100%;padding:0;margin:0" type="number" value="0" max="1999" min="0">
+		</div>
+
+		<div style="flex-grow:1;margin:0;padding:0">
+			<input style="width:100%;padding:0;margin:0" id="opacityControl" type="range" min="0" max="1" step="0.01" value="0.5" oninput="image1.style.opacity = opacityControl.value" />
+		</div>
+	</div>
+</div>
+</body>
+</html>
+<script>
+//
+//    This file is derived from the javascript portion of the drag-zoom example
+//    at the web site: 
+//     https://stackoverflow.com/questions/35252249/move-drag-pan-and-zoom-object-image-or-div-in-pure-js
+//
+
+document.addEventListener('DOMContentLoaded', (event) => {
+
+var query = `query reviewPR {
+  viewer {
+    login
+  }
+  repository(name: "comma10k", owner: "commaai") {
+    pullRequests(states: OPEN, first: 100) {
+      nodes {
+        baseRefOid
+        headRefOid
+        url
+        number
+        files(first: 100) {
+          nodes {
+            path
+          }
+        }
+      }
+    }
+  }
+}`;
+var prWithAllImages = [];
+fetch('https://api.github.com/graphql', {
+	method: 'POST',
+	body: JSON.stringify({
+	query
+	}),
+	headers: {
+		'Authorization': 'Bearer' + ' ' + '46b373c54a7d322910c3efe4ad1c970982407498'
+	}
+}).then(function (resp) {
+
+	// Return the response as JSON
+	return resp.json();
+
+}).then(function (data) {
+ var re = /(?:\.([^.]+))?$/;
+
+
+  prWithAllImages = 
+	data.data.repository.pullRequests.nodes.filter(
+	function(node){
+		return node.files.nodes.every(
+			function (file){return re.exec(file.path)[1]  === 'png'}
+		)}
+		);
+		
+		prWithAllImages.forEach(function(files) {
+		var opt = document.createElement("option");
+		opt.text = files.number;
+    //opt.value = files.index;
+	document.getElementById("prList").options.add(opt);
+    
+});
+
+
+
+document.getElementById("prListDiv").style.display="block";
+    
+
+	// Log the API data
+	console.log('token', data);
+
+}).catch(function (err) {
+
+	// Log any errors
+	console.log('something went wrong', err);
+
+});
+
+var images = [];
+var prHash = "";
+
+var prefix = 0;
+var currentIndex = 0;
+var zoom_factor = 1.0,
+orig_width = document.getElementById('image1').getBoundingClientRect().width,
+      orig_height = document.getElementById('image1').getBoundingClientRect().height;
+	  
+  var zoomer = (function () {
+    var img_ele = null,
+	 img_ele2 = null,
+      x_cursor = 0,
+      y_cursor = 0,
+      x_img_ele = 0,
+      y_img_ele = 0,
+      current_top = 0,
+      current_left = 0;
+      
+
+    return {
+        zoom: function (zoomincrement) {
+            img_ele = document.getElementById('image1');
+			img_ele2 = document.getElementById('image2');
+            zoom_factor = zoom_factor + zoomincrement;
+            if (zoom_factor <= 1.0)
+            {
+                zoom_factor = 1.0;
+                img_ele.style.top =  '0px';    
+                img_ele.style.left = '0px';
+				
+				img_ele2.style.top = img_ele.style.top;
+				img_ele2.style.left = img_ele.style.left;
+            }
+            var pre_width = img_ele.getBoundingClientRect().width, pre_height = img_ele.getBoundingClientRect().height;
+            console.log('prewidth='+pre_width+'; pre_height ='+pre_height);
+        //  img_ele.style.width = (pre_width * zoomincrement) + 'px';
+        //  img_ele.style.height = (pre_height * zoomincrement) + 'px';
+            var new_width = (orig_width * zoom_factor);
+            var new_heigth = (orig_height * zoom_factor);
+
+                console.log('postwidth='+new_width+'; postheight ='+new_heigth);
+
+            if (current_left < (orig_width - new_width))
+            {
+                current_left = (orig_width - new_width);
+            }
+            if (current_top < (orig_height - new_heigth))
+            {
+                current_top = (orig_height - new_heigth);
+            }
+            img_ele.style.left = current_left + 'px';
+            img_ele.style.top = current_top + 'px';
+            img_ele.style.width = new_width + 'px';
+            img_ele.style.height = new_heigth + 'px';
+			
+			img_ele2.style.left = img_ele.style.left;
+			img_ele2.style.top = img_ele.style.top;
+			img_ele2.style.width = img_ele.style.width;
+			img_ele2.style.height = img_ele.style.height;
+				
+
+            img_ele = null;
+        },
+
+        start_drag: function () {
+		
+
+          img_ele = document.getElementById('image1');
+			img_ele2 = document.getElementById('image2');
+			
+          x_img_ele = window.event.clientX - document.getElementById('image1').offsetLeft;
+          y_img_ele = window.event.clientY - document.getElementById('image1').offsetTop;
+          console.log('img='+img_ele.toString()+'; x_img_ele='+x_img_ele+'; y_img_ele='+y_img_ele+';')
+          console.log('offLeft='+document.getElementById('image1').offsetLeft+'; offTop='+document.getElementById('image1').offsetTop)
+        },
+
+        stop_drag: function () {
+	
+          if (img_ele !== null) {
+
+            console.log(img_ele.style.left+' - '+img_ele.style.top);
+            }
+          img_ele = null;
+        },
+
+        while_drag: function () {
+	
+            if (img_ele !== null)
+            {
+                var x_cursor = window.event.clientX;
+                var y_cursor = window.event.clientY;
+                var new_left = (x_cursor - x_img_ele);
+             
+			
+				
+                var new_top = ( y_cursor - y_img_ele);
+                if (new_top > 0)
+                {
+                    new_top = 0;
+                }
+                if (new_top < (orig_height - img_ele.height))
+                {
+                    new_top = (orig_height - img_ele.height);
+                }
+                current_left = new_left;
+                img_ele.style.left = new_left + 'px';
+                current_top = new_top;
+                img_ele.style.top = new_top + 'px';
+				
+				img_ele2.style.left = img_ele.style.left
+				img_ele2.style.top = img_ele.style.top
+
+                //console.log(img_ele.style.left+' - '+img_ele.style.top);
+            }
+        }
+    };
+} ());
+
+
+
+
+
+
+
+	function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+		var opacityControl = document.getElementById("opacityControl");
+		opacityControl.stepUp(1);
+		document.getElementById("image1").style.opacity = opacityControl.value
+    }
+    else if (e.keyCode == '40') {
+        var opacityControl = document.getElementById("opacityControl");
+		opacityControl.stepDown(1);
+		document.getElementById("image1").style.opacity = opacityControl.value
+    }
+    else if (e.keyCode == '37') {
+	
+	if((currentIndex - 1) < document.getElementById('index').min)
+	{
+	return;
+	}
+	currentIndex = currentIndex - 1;
+	document.getElementById('index').value = currentIndex;
+	changeImage(currentIndex);
+
+    }
+    else if (e.keyCode == '39') {
+	if((currentIndex + 1) > document.getElementById('index').max)
+	{
+		return;
+	}
+	currentIndex = currentIndex + 1;
+	document.getElementById('index').value = currentIndex;
+changeImage(currentIndex);
+	   // right arrow
+    }
+
+}
+
+
+function imageGroup()
+{
+  if(this.id === "d" && this.checked)
+  {
+    prefix = 0
+  document.getElementById('index').max = 1999
+  document.getElementById('index').value = 1000;
+  
+  changeImage(1000);
+  }
+  else if(this.id === "h" && this.checked)
+  {
+  prefix = 2000
+  document.getElementById('index').max = 99
+  document.getElementById('index').value = 0;
+  
+  changeImage(0);
+  }
+}
+
+function changeImage(index)
+{
+	currentIndex = index;
+
+	document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[prefix+index].substring(5);
+	document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix+index];
+	  
+        M.toast({html: images[index]})
+}
+
+function imageLoaded()
+{
+if(zoom_factor === 1.0)
+{
+	orig_width = document.getElementById("image2").getBoundingClientRect().width;
+    orig_height = document.getElementById("image2").getBoundingClientRect().height;
+	}
+}
+
+window.addEventListener("dblclick", event => {
+
+zoomer.zoom(0.25);
+    
+	});
+	
+	window.addEventListener("wheel", event => {
+const delta = -Math.sign(event.deltaY);
+zoomer.zoom(delta/4);
+    
+	});
+	
+document.getElementById('image1').addEventListener('mousedown', zoomer.start_drag);
+document.getElementById('image2').addEventListener('load', imageLoaded);
+document.getElementById('zoom-container').addEventListener('mousemove', zoomer.while_drag);
+document.getElementById('zoom-container').addEventListener('mouseup', zoomer.stop_drag);
+document.getElementById('zoom-container').addEventListener('mouseout', zoomer.stop_drag);
+document.getElementById('index').addEventListener('change', function(evt) {changeImage(Number(this.value))} );
+
+document.getElementById('prList').addEventListener('change', function(evt) {
+prHash = prWithAllImages[this.selectedIndex].headRefOid;
+images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image){
+	return image.path;
+});
+  document.getElementById('index').max = images.length-1;
+  document.getElementById('index').value = 0;
+      changeImage(0);
+  
+  
+
+});
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, options);
+  });
+document.onkeydown = checkKey;
+
+})
+
+
+
+</script>
