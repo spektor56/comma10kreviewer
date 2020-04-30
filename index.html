@@ -340,6 +340,12 @@ orig_width = document.getElementById('image1').getBoundingClientRect().width,
 changeImage(currentIndex);
 	   // right arrow
     }
+	else if (e.keyCode == '32'){
+	var originalMask = document.getElementById('originalMask');
+	originalMask.checked = !originalMask.checked;
+changeImage(currentIndex);	 
+	}
+	
 
 }
 
