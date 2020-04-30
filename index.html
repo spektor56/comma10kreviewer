@@ -69,10 +69,10 @@ opacity:0.5;
 		</div>
 		<div class="parent">
 		  <div style="position:absolute; top: 50%;height:100%;left: 50%;transform: translate(-50%, -50%)">
-		  <img ondragstart="return false" id="image2" class="zoom-img" src="" />
+		  <img ondragstart="return false" id="image2" class="zoom-img" style="user-select: none;" />
 		  </div>
 		  <div id="maskContainer" style="position:absolute; top: 50%;height:100%;left: 50%;transform: translate(-50%, -50%)">
-			<img ondragstart="return false" id="image1" class="zoom-img" src="" />
+			<img ondragstart="return false" id="image1" class="zoom-img" style="user-select: none;" />
 		  </div>
 		</div>
 		
@@ -208,8 +208,15 @@ orig_width = document.getElementById('image1').getBoundingClientRect().width,
 
     return {
         zoom: function (zoomincrement) {
+
             img_ele = document.getElementById('image1');
 			img_ele2 = document.getElementById('image2');
+			
+			if(img_ele.srcset == '' || img_ele2.srcset == '')
+			{
+				return;
+			}
+			
             zoom_factor = zoom_factor + zoomincrement;
             if (zoom_factor <= 1.0)
             {
