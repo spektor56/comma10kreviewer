@@ -159,6 +159,13 @@ fetch('https://api.github.com/graphql', {
 		prWithAllImages.forEach(function(files) {
 		var opt = document.createElement("option");
 		opt.text = files.number;
+		opt.value = files.url;
+		opt.addEventListener("dblclick", event => {
+
+		window.open(event.srcElement.value);
+
+    
+	});
     //opt.value = files.index;
 	document.getElementById("prList").options.add(opt);
     
