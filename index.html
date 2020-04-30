@@ -84,6 +84,15 @@ opacity:0.5;
 		<div style="width:60px;margin:0;padding:0">
 			<input id="index" style="height:30px;width:100%;padding:0;margin:0" type="number" value="0" max="1999" min="0">
 		</div>
+		
+		<div style="width:100px;margin:0;padding:0">
+			 
+    <label style="float: left" >
+      <input  id="originalMask" type="checkbox" />
+      <span style="padding-left:25px">Original</span>
+    </label>
+	
+		</div>
 
 		<div style="flex-grow:1;margin:0;padding:0">
 			<input style="width:100%;padding:0;margin:0" id="opacityControl" type="range" min="0" max="1" step="0.01" value="0.5" oninput="image1.style.opacity = opacityControl.value" />
@@ -360,7 +369,14 @@ function changeImage(index)
 	currentIndex = index;
 
 	document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[prefix+index].substring(5);
-	document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix+index];
+	if(document.getElementById('originalMask').checked)
+	{
+		document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[prefix+index].substring(5);
+	}
+	else
+	{
+		document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix+index];
+	}
 	  
         M.toast({html: images[index]})
 }
@@ -401,7 +417,9 @@ images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image){
   document.getElementById('index').max = images.length-1;
   document.getElementById('index').value = 0;
       changeImage(0);
-  
+
+
+document.getElementById('originalMask').addEventListener('change', function(evt) {	changeImage(currentIndex); } );	  
   
 
 });
