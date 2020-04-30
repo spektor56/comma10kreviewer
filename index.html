@@ -410,11 +410,7 @@ if(zoom_factor === 1.0)
 	}
 }
 
-window.addEventListener("dblclick", event => {
 
-zoomer.zoom(0.25);
-    
-	});
 	
 	window.addEventListener("wheel", event => {
 const delta = -Math.sign(event.deltaY);
@@ -428,7 +424,11 @@ document.getElementById('zoom-container').addEventListener('mousemove', zoomer.w
 document.getElementById('zoom-container').addEventListener('mouseup', zoomer.stop_drag);
 document.getElementById('zoom-container').addEventListener('mouseout', zoomer.stop_drag);
 document.getElementById('index').addEventListener('change', function(evt) {changeImage(Number(this.value))} );
+document.getElementById('image1').addEventListener("dblclick", event => {
 
+zoomer.zoom(0.25);
+    
+	});
 document.getElementById('prList').addEventListener('change', function(evt) {
 prHash = prWithAllImages[this.selectedIndex].headRefOid;
 images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image){
