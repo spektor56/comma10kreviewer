@@ -15,7 +15,7 @@ padding:0;
 margin: 0;
 }
  
- .zoom-img {
+ .mask-img {
   cursor: move;
   height: 100%;
   margin: auto;
@@ -25,6 +25,29 @@ margin: 0;
   image-rendering: pixelated;
   
 }
+
+ .zoom-img-pixelated {
+  cursor: move;
+  height: 100%;
+  margin: auto;
+  display:block;
+  position:relative;
+  transform-origin: 0 0;
+  image-rendering: pixelated ;
+  
+}
+
+ .zoom-img-hq {
+  cursor: move;
+  height: 100%;
+  margin: auto;
+  display:block;
+  position:relative;
+  transform-origin: 0 0;
+  image-rendering: high-quality ;
+  
+}
+
 
 #zoom-container {
   overflow: hidden;
@@ -68,10 +91,10 @@ opacity:0.5;
 		</div>
 <div class="parent">
 		  <div style="position:absolute; height:100%;;">
-			<img ondragstart="return false" id="image2" class="zoom-img" style="user-select: none;" />
+			<img ondragstart="return false" id="image2" class="zoom-img-pixelated" style="user-select: none;" />
 		  </div>
 		  <div id="maskContainer" style="position:absolute;height:100%;;">
-			<img ondragstart="return false" id="image1" class="zoom-img" style="user-select: none;" />
+			<img ondragstart="return false" id="image1" class="mask-img" style="user-select: none;" />
 		  </div>
 		</div>
 		
@@ -374,6 +397,19 @@ changeImage(currentIndex);
 	else
 	{
 	document.getElementById("image1").style.opacity = document.getElementById("opacityControl").value;
+	}
+	
+    }
+			else if (e.keyCode == '80') {
+	if(document.getElementById("image2").classList.contains("zoom-img-pixelated"))
+	{
+		document.getElementById("image2").classList.remove("zoom-img-pixelated");
+		document.getElementById("image2").classList.add("zoom-img-hq");
+	}
+	else
+	{
+		document.getElementById("image2").classList.remove("zoom-img-hq");
+		document.getElementById("image2").classList.add("zoom-img-pixelated");
 	}
 	
     }
