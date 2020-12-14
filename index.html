@@ -401,7 +401,7 @@
                 } else {
                     document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix + index];
                 }
-
+		M.Toast.dismissAll();
                 M.toast({ html: images[index] });
             }
 
