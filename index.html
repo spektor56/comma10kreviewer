@@ -207,7 +207,6 @@
             var images = [];
             var prHash = "";
 
-            var prefix = 0;
             var currentIndex = 1000;
             var currentScale = 1.0,
                 orig_width = document.getElementById('image1').getBoundingClientRect().width,
@@ -370,48 +369,47 @@
                         document.getElementById("image2").classList.add("zoom-img-pixelated");
                     }
 
+                } else if (e.keyCode == '112' || e.keyCode == '113' || e.keyCode == '114') {
+                    e.preventDefault();
+
+                    var copyLink = "";
+                    var copyMessage = "";
+                    if (e.keyCode == '112') {
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[currentIndex];
+                        copyMessage = "Copied base image URL to clipboard";
+                    }
+                    else if (e.keyCode == '113') {
+                        copyLink = https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[currentIndex];
+                        copyMessage = "Copied PR segnet mask URL to clipboard";
+                    }
+                    else if (e.keyCode == '114') {
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[currentIndex];
+                        copyMessage = "Copied original segnet mask URL to clipboard";
+                    }
+
+                   navigator.clipboard.writeText(copyLink).then(function () {
+                        M.Toast.dismissAll();
+                        M.toast({ html: copyMessage });
+                    }, function (err) {
+                        console.error('Async: Could not copy text: ', err);
+                    });
                 }
 
 
-            }
 
-
-            function imageGroup() {
-                if (this.id === "d" && this.checked) {
-                    prefix = 0;
-                    document.getElementById('index').max = 1999;
-                    document.getElementById('index').value = 1000;
-
-                    changeImage(1000);
-                } else if (this.id === "h" && this.checked) {
-                    prefix = 2000;
-                    document.getElementById('index').max = 99;
-                    document.getElementById('index').value = 0;
-
-                    changeImage(0);
-                }
             }
 
             function changeImage(index) {
                 currentIndex = index;
 
-                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[prefix + index].substring(5);
+                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[index].substring(5);
                 if (document.getElementById('originalMask').checked) {
-                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[prefix + index].substring(5);
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[index].substring(5);
                 } else {
-                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix + index];
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[index];
                 }
-
+                M.Toast.dismissAll();
                 M.toast({ html: images[index] });
-            }
-
-            function resetView() {
-                translateY = 0;
-                translateX = (window.innerWidth - document.getElementById("image1").getBoundingClientRect().width) / 2;
-                currentScale = 1;
-                document.getElementById("image1").style.transform = `translate(${translateX}px, ${translateY}px)  scale(${1}) `;
-                document.getElementById("image2").style.transform = document.getElementById("image1").style.transform;
-
             }
 
             function imageLoaded() {
