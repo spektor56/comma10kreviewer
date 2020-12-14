@@ -375,7 +375,7 @@
                     var copyLink = "";
                     var copyMessage = "";
                     if (e.keyCode == '112') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[currentIndex];
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[currentIndex].substring(5);
                         copyMessage = "Copied base image URL to clipboard";
                     }
                     else if (e.keyCode == '113') {
@@ -383,7 +383,7 @@
                         copyMessage = "Copied PR segnet mask URL to clipboard";
                     }
                     else if (e.keyCode == '114') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[currentIndex];
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[currentIndex].substring(5);
                         copyMessage = "Copied original segnet mask URL to clipboard";
                     }
 
