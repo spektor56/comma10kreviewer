@@ -1,145 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Compiled and minified CSS -->
+    <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<style>
-html, body
-{
-width:100%;
-height:100%;
-padding:0;
-margin: 0;
-}
- 
- .mask-img {
-  cursor: move;
-  height: 100%;
-  margin: auto;
-  display:block;
-  position:relative;
-  transform-origin: 0 0;
-  image-rendering: pixelated;
-  
-}
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
 
- .zoom-img-pixelated {
-  cursor: move;
-  height: 100%;
-  margin: auto;
-  display:block;
-  position:relative;
-  transform-origin: 0 0;
-  image-rendering: pixelated ;
-  
-}
+        .mask-img {
+            cursor: move;
+            display: block;
+            height: 100%;
+            image-rendering: pixelated;
+            margin: auto;
+            position: relative;
+            transform-origin: 0 0;
+        }
 
- .zoom-img-hq {
-  cursor: move;
-  height: 100%;
-  margin: auto;
-  display:block;
-  position:relative;
-  transform-origin: 0 0;
-  image-rendering: high-quality ;
-  
-}
+        .zoom-img-pixelated {
+            cursor: move;
+            display: block;
+            height: 100%;
+            image-rendering: pixelated;
+            margin: auto;
+            position: relative;
+            transform-origin: 0 0;
+        }
+
+        .zoom-img-hq {
+            cursor: move;
+            display: block;
+            height: 100%;
+            image-rendering: high-quality;
+            margin: auto;
+            position: relative;
+            transform-origin: 0 0;
+        }
 
 
-#zoom-container {
-  overflow: hidden;
-  background: black;
-  flex-grow : 1;
-  margin:0;padding:0
-}
+        #zoom-container {
+            background: black;
+            flex-grow: 1;
+            margin: 0;
+            overflow: hidden;
+            padding: 0
+        }
 
-.button {
-  width: 100px;
-  height: 50px;
-}
+        .button {
+            height: 50px;
+            width: 100px;
+        }
 
-.parent {
-  position: relative;
-  top: 0;
-  left: 0;
-    height: 100%;
- width:100%;
-  
-}
+        .parent {
+            height: 100%;
+            left: 0;
+            position: relative;
+            top: 0;
+            width: 100%;
+        }
 
-#image2 {
-}
+        #image2 { }
 
-#image1
-{
-opacity:0.5;
-
-}
-</style>
+        #image1 { opacity: 0.5; }
+    </style>
 </head>
 <body id="fullbody">
-<div style="height:100%;display: flex;flex-flow: column;margin:0;padding:0">
-	<div id="zoom-container" style="display: flex;">   
-		  	<div id="prListDiv" style="display:none" style="width:200px;position: relative;height:100%">
+<div style="display: flex; flex-flow: column; height: 100%; margin: 0; padding: 0">
+    <div id="zoom-container" style="display: flex;">
+        <div id="prListDiv" style="display: none" style="height: 100%; position: relative; width: 200px;">
 
-			<select  id="prList" style="display: block; height:100%" id="cars" size="55">
+            <select id="prList" style="display: block; height: 100%" id="cars" size="55">
 
-</select>
-		</div>
-<div class="parent">
-		  <div style="position:absolute; height:100%;;">
-			<img ondragstart="return false" id="image2" class="zoom-img-pixelated" style="user-select: none;" />
-		  </div>
-		  <div id="maskContainer" style="position:absolute;height:100%;;">
-			<img ondragstart="return false" id="image1" class="mask-img" style="user-select: none;" />
-		  </div>
-		</div>
-		
+            </select>
+        </div>
+        <div class="parent">
+            <div style="height: 100%; position: absolute; ;">
+                <img ondragstart="return false" id="image2" class="zoom-img-pixelated" style="user-select: none;"/>
+            </div>
+            <div id="maskContainer" style="height: 100%; position: absolute; ;">
+                <img ondragstart="return false" id="image1" class="mask-img" style="user-select: none;"/>
+            </div>
+        </div>
 
-	</div>	
-	
-	
-	<div style="height:30px;margin:0;padding:0;display: flex;flex-flow: row;">
-		<div style="width:60px;margin:0;padding:0">
-			<input id="index" style="height:30px;width:100%;padding:0;margin:0" type="number" value="0" max="1999" min="0">
-		</div>
-		
-		<div style="width:100px;margin:0;padding:0">
-			 
-    <label style="float: left" >
-      <input  id="originalMask" type="checkbox" />
-      <span style="padding-left:25px">Original</span>
-    </label>
-	
-		</div>
 
-	
-		<div style="flex-grow:1;margin:0;padding:0">
-			<input style=";padding:0;margin:0" id="opacityControl" type="range" min="0" max="1" step="0.05" value="0.5" oninput="image1.style.opacity = opacityControl.value" />
-		</div>
-		<div style="flex-grow:1;margin:0;padding:0">
-			<input style=";padding:0;margin:0" id="brightnessControl" type="range" min="50" max="300" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
-		</div>
-		<div style="flex-grow:1;margin:0;padding:0">
-			<input style=";padding:0;margin:0" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
-		</div>
-	</div>
+    </div>
+
+
+    <div style="display: flex; flex-flow: row; height: 31px; margin: 0; padding: 0;">
+        <div style="margin: 0; padding: 0; width: 60px;">
+            <input id="index" style="height: 30px; margin: 0; padding: 0; width: 100%;" type="number" value="0" max="1999" min="0">
+        </div>
+
+        <div style="margin: 0; padding: 0; width: 100px;">
+
+            <label style="float: left">
+                <input id="originalMask" type="checkbox"/>
+                <span style="padding-left: 25px">Original</span>
+            </label>
+
+        </div>
+
+
+        <div style="flex-grow: 1; margin: 0; padding: 0">
+            <input style="; margin: 0; padding: 0;" id="opacityControl" type="range" min="0" max="1" step="0.05" value="0.5" oninput="image1.style.opacity = opacityControl.value"/>
+        </div>
+        <div style="flex-grow: 1; margin: 0; padding: 0">
+            <input style="; margin: 0; padding: 0;" id="brightnessControl" type="range" min="50" max="300" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'"/>
+        </div>
+        <div style="flex-grow: 1; margin: 0; padding: 0">
+            <input style="; margin: 0; padding: 0;" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'"/>
+        </div>
+    </div>
 </div>
 </body>
 </html>
 <script>
-//
-//    This file is derived from the javascript portion of the drag-zoom example
-//    at the web site: 
-//     https://stackoverflow.com/questions/35252249/move-drag-pan-and-zoom-object-image-or-div-in-pure-js
-//
+  
+    document.addEventListener('DOMContentLoaded',
+        (event) => {
 
-document.addEventListener('DOMContentLoaded', (event) => {
-
-var query = `query reviewPR {
+            var query = `query reviewPR {
   viewer {
     login
   }
@@ -159,116 +146,110 @@ var query = `query reviewPR {
     }
   }
 }`;
-var prWithAllImages = [];
-fetch('https://api.github.com/graphql', {
-	method: 'POST',
-	body: JSON.stringify({
-	query
-	}),
-	headers: {
-		'Authorization': 'Bearer' + ' ' + atob('MWMzYTkxZGZkMmJlZDlmZjBmYmQ2NWQ5ZWQzZGQ5NzU5YmQ5NzM5MQ==')
-	}
-}).then(function (resp) {
+            var prWithAllImages = [];
+            fetch('https://api.github.com/graphql',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        query
+                    }),
+                    headers: {
+                        'Authorization': 'Bearer' + ' ' + atob('MWMzYTkxZGZkMmJlZDlmZjBmYmQ2NWQ5ZWQzZGQ5NzU5YmQ5NzM5MQ==')
+                    }
+                }).then(function(resp) {
 
-	// Return the response as JSON
-	return resp.json();
+                // Return the response as JSON
+                return resp.json();
 
-}).then(function (data) {
- var re = /(?:\.([^.]+))?$/;
-
-
-  prWithAllImages = 
-	data.data.repository.pullRequests.nodes.filter(
-	function(node){
-		return node.files.nodes.every(
-			function (file){return re.exec(file.path)[1]  === 'png'}
-		)}
-		);
-		
-		prWithAllImages.forEach(function(files) {
-		var opt = document.createElement("option");
-		opt.text = files.number;
-		opt.value = files.url;
-		opt.addEventListener("dblclick", event => {
-
-		window.open(event.srcElement.value);
-
-    
-	});
-    //opt.value = files.index;
-	document.getElementById("prList").options.add(opt);
-    
-});
+            }).then(function(data) {
+                var re = /(?:\.([^.]+))?$/;
 
 
+                prWithAllImages =
+                    data.data.repository.pullRequests.nodes.filter(
+                        function(node) {
+                            return node.files.nodes.every(
+                                function(file) { return re.exec(file.path)[1] === 'png' }
+                            )
+                        }
+                    );
 
-document.getElementById("prListDiv").style.display="block";
-    
+                prWithAllImages.forEach(function(files) {
+                    var opt = document.createElement("option");
+                    opt.text = files.number;
+                    opt.value = files.url;
+                    opt.addEventListener("dblclick",
+                        event => {
 
-	// Log the API data
-	console.log('token', data);
+                            window.open(event.srcElement.value);
 
-}).catch(function (err) {
 
-	// Log any errors
-	console.log('something went wrong', err);
+                        });
+                    //opt.value = files.index;
+                    document.getElementById("prList").options.add(opt);
 
-});
+                });
 
-var images = [];
-var prHash = "";
 
-	var prefix = 0;
-var currentIndex = 1000;
-var currentScale = 1.0,
-orig_width = document.getElementById('image1').getBoundingClientRect().width,
-      orig_height = document.getElementById('image1').getBoundingClientRect().height;
-var translateX = 0
-var translateY = 0
-	
-	
-	
-  var zoomer = (function () {
-    var img_ele = null,
-	 img_ele2 = null,
-      x_cursor = 0,
-      y_cursor = 0,
-      x_img_ele = 0,
-      y_img_ele = 0,
-      current_top = 0,
-      current_left = 0;
-      
-	  
-	  
-	  
-	  
-	  
+                document.getElementById("prListDiv").style.display = "block";
 
-    return {
-        zoom: function (nextScale, event) {
-		
-            var mask = document.getElementById('image1');
-			var image = document.getElementById('image2');
-			 const ratio = 1 - nextScale / currentScale;
 
-  const {
-    clientX,
-    clientY
-  } = event
+                // Log the API data
+                console.log('token', data);
 
-  translateX += (clientX - translateX) * ratio;
-  translateY += (clientY - translateY) * ratio;
-  
-  if(nextScale < 1)
-		{
-			nextScale = 1;
-			
-			translateY = 0;
-			translateX = (window.innerWidth - document.getElementById("image1").getBoundingClientRect().width)/2;
-		}
-		
- 
-                
+            }).catch(function(err) {
+
+                // Log any errors
+                console.log('something went wrong', err);
+
+            });
+
+            var images = [];
+            var prHash = "";
+
+            var prefix = 0;
+            var currentIndex = 1000;
+            var currentScale = 1.0,
+                orig_width = document.getElementById('image1').getBoundingClientRect().width,
+                orig_height = document.getElementById('image1').getBoundingClientRect().height;
+            var translateX = 0;
+            var translateY = 0;
+
+
+            var zoomer = (function() {
+                var img_ele = null,
+                    img_ele2 = null,
+                    x_cursor = 0,
+                    y_cursor = 0,
+                    x_img_ele = 0,
+                    y_img_ele = 0,
+                    current_top = 0,
+                    current_left = 0;
+
+
+                return {
+                    zoom: function(nextScale, event) {
+
+                        var mask = document.getElementById('image1');
+                        var image = document.getElementById('image2');
+                        const ratio = 1 - nextScale / currentScale;
+
+                        const {
+                            clientX,
+                            clientY
+                        } = event;
+
+                        translateX += (clientX - translateX) * ratio;
+                        translateY += (clientY - translateY) * ratio;
+
+                        if (nextScale < 1) {
+                            nextScale = 1;
+
+                            translateY = 0;
+                            translateX = (window.innerWidth - document.getElementById("image1").getBoundingClientRect().width) / 2;
+                        }
+
+
 /*			
 				if (translateY > 0)
                 {
@@ -281,245 +262,211 @@ var translateY = 0
                 }
   */
 
-  mask.style.transform = `translate(${translateX}px, ${translateY}px) scale(${nextScale})`;
-  image.style.transform = mask.style.transform;
+                        mask.style.transform = `translate(${translateX}px, ${translateY}px) scale(${nextScale})`;
+                        image.style.transform = mask.style.transform;
 
-  currentScale = nextScale
-        },
+                        currentScale = nextScale;
+                    },
 
-        start_drag: function () {
-		
+                    start_drag: function() {
 
-          img_ele = document.getElementById('image1');
-			img_ele2 = document.getElementById('image2');
-			
-			  translateX = (window.event.clientX - translateX);
-			translateY = (window.event.clientY - translateY) ;
-			
-          
-        },
 
-        stop_drag: function () {
-	
-          if (img_ele !== null) {
-				translateX = (window.event.clientX - translateX);
-				translateY = (window.event.clientY - translateY) ;
-            
-            }
-          img_ele = null;
-        },
+                        img_ele = document.getElementById('image1');
+                        img_ele2 = document.getElementById('image2');
 
-        while_drag: function () {
-	
-            if (img_ele !== null)
-            {
-                var x_cursor = window.event.clientX;
-                var y_cursor = window.event.clientY;
-                var new_left = (x_cursor - translateX);
- 
-                var new_top = ( y_cursor - translateY);
+                        translateX = (window.event.clientX - translateX);
+                        translateY = (window.event.clientY - translateY);
 
-				
-				if (new_top > 0)
-                {
-                    new_top =0;
+
+                    },
+
+                    stop_drag: function() {
+
+                        if (img_ele !== null) {
+                            translateX = (window.event.clientX - translateX);
+                            translateY = (window.event.clientY - translateY);
+
+                        }
+                        img_ele = null;
+                    },
+
+                    while_drag: function() {
+
+                        if (img_ele !== null) {
+                            var x_cursor = window.event.clientX;
+                            var y_cursor = window.event.clientY;
+                            var new_left = (x_cursor - translateX);
+
+                            var new_top = (y_cursor - translateY);
+
+
+                            if (new_top > 0) {
+                                new_top = 0;
+                            }
+
+                            if (new_top < -(img_ele.getBoundingClientRect().height - orig_height)) {
+                                new_top = -(img_ele.getBoundingClientRect().height - orig_height);
+                            }
+
+
+                            img_ele.style.transform = `translate(${new_left}px, ${new_top}px)  scale(${currentScale}) `;
+                            img_ele2.style.transform = img_ele.style.transform;
+
+
+                            //console.log(img_ele.style.left+' - '+img_ele.style.top);
+                        }
+                    }
+                };
+            }());
+
+
+            function checkKey(e) {
+
+                e = e || window.event;
+
+                if (e.keyCode == '38') {
+                    // up arrow
+                    var opacityControl = document.getElementById("opacityControl");
+                    opacityControl.stepUp(1);
+                    document.getElementById("image1").style.opacity = opacityControl.value;
+                } else if (e.keyCode == '40') {
+                    var opacityControl = document.getElementById("opacityControl");
+                    opacityControl.stepDown(1);
+                    document.getElementById("image1").style.opacity = opacityControl.value;
+                } else if (e.keyCode == '37') {
+
+                    if ((currentIndex - 1) < document.getElementById('index').min) {
+                        return;
+                    }
+                    currentIndex = currentIndex - 1;
+                    document.getElementById('index').value = currentIndex;
+                    changeImage(currentIndex);
+
+                } else if (e.keyCode == '39') {
+                    if ((currentIndex + 1) > document.getElementById('index').max) {
+                        return;
+                    }
+                    currentIndex = currentIndex + 1;
+                    document.getElementById('index').value = currentIndex;
+                    changeImage(currentIndex);
+                    // right arrow
+                } else if (e.keyCode == '32') {
+                    var originalMask = document.getElementById('originalMask');
+                    originalMask.checked = !originalMask.checked;
+                    changeImage(currentIndex);
+                } else if (e.keyCode == '188') {
+                    if (document.getElementById("image1").style.opacity === document.getElementById("opacityControl").value) {
+                        document.getElementById("image1").style.opacity = 0;
+                    } else {
+                        document.getElementById("image1").style.opacity = document.getElementById("opacityControl").value;
+                    }
+
+                } else if (e.keyCode == '80') {
+                    if (document.getElementById("image2").classList.contains("zoom-img-pixelated")) {
+                        document.getElementById("image2").classList.remove("zoom-img-pixelated");
+                        document.getElementById("image2").classList.add("zoom-img-hq");
+                    } else {
+                        document.getElementById("image2").classList.remove("zoom-img-hq");
+                        document.getElementById("image2").classList.add("zoom-img-pixelated");
+                    }
+
                 }
-				
-                if (new_top < -(img_ele.getBoundingClientRect().height- orig_height))
-                {
-                    new_top = -(img_ele.getBoundingClientRect().height- orig_height)
-                }
-				
-                              
-				
-				img_ele.style.transform = `translate(${new_left}px, ${new_top}px)  scale(${currentScale}) `;
-				img_ele2.style.transform = img_ele.style.transform 
-				
 
-                //console.log(img_ele.style.left+' - '+img_ele.style.top);
+
             }
-        }
-    };
-} ());
 
 
+            function imageGroup() {
+                if (this.id === "d" && this.checked) {
+                    prefix = 0;
+                    document.getElementById('index').max = 1999;
+                    document.getElementById('index').value = 1000;
+
+                    changeImage(1000);
+                } else if (this.id === "h" && this.checked) {
+                    prefix = 2000;
+                    document.getElementById('index').max = 99;
+                    document.getElementById('index').value = 0;
+
+                    changeImage(0);
+                }
+            }
+
+            function changeImage(index) {
+                currentIndex = index;
+
+                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[prefix + index].substring(5);
+                if (document.getElementById('originalMask').checked) {
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[prefix + index].substring(5);
+                } else {
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix + index];
+                }
+
+                M.toast({ html: images[index] });
+            }
+
+            function resetView() {
+                translateY = 0;
+                translateX = (window.innerWidth - document.getElementById("image1").getBoundingClientRect().width) / 2;
+                currentScale = 1;
+                document.getElementById("image1").style.transform = `translate(${translateX}px, ${translateY}px)  scale(${1}) `;
+                document.getElementById("image2").style.transform = document.getElementById("image1").style.transform;
+
+            }
+
+            function imageLoaded() {
+                if (currentScale === 1.0) {
+                    orig_width = document.getElementById("image2").getBoundingClientRect().width;
+                    orig_height = document.getElementById("image2").getBoundingClientRect().height;
+                }
+            }
 
 
+            window.addEventListener("wheel",
+                event => {
+
+                    const delta = event.wheelDelta / 120;
+                    const nextScale = currentScale + delta;
+
+                    zoomer.zoom(nextScale, event);
+
+                });
+
+            document.getElementById('image1').addEventListener('mousedown', zoomer.start_drag);
+            document.getElementById('image2').addEventListener('load', imageLoaded);
+            document.getElementById('zoom-container').addEventListener('mousemove', zoomer.while_drag);
+            document.getElementById('zoom-container').addEventListener('mouseup', zoomer.stop_drag);
+            document.getElementById('zoom-container').addEventListener('mouseout', zoomer.stop_drag);
+            document.getElementById('index').addEventListener('change', function(evt) { changeImage(Number(this.value)) });
+            document.getElementById('image1').addEventListener("dblclick",
+                event => {
+                    const nextScale = currentScale + 0.25;
+                    zoomer.zoom(nextScale, event);
+
+                });
+            document.getElementById('prList').addEventListener('change',
+                function(evt) {
+                    prHash = prWithAllImages[this.selectedIndex].headRefOid;
+                    images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image) {
+                        return image.path;
+                    });
+                    document.getElementById('index').max = images.length - 1;
+                    document.getElementById('index').value = 0;
+                    changeImage(0);
 
 
-
-	function checkKey(e) {
-
-    e = e || window.event;
-
-    if (e.keyCode == '38') {
-        // up arrow
-		var opacityControl = document.getElementById("opacityControl");
-		opacityControl.stepUp(1);
-		document.getElementById("image1").style.opacity = opacityControl.value
-    }
-    else if (e.keyCode == '40') {
-        var opacityControl = document.getElementById("opacityControl");
-		opacityControl.stepDown(1);
-		document.getElementById("image1").style.opacity = opacityControl.value
-    }
-    else if (e.keyCode == '37') {
-	
-	if((currentIndex - 1) < document.getElementById('index').min)
-	{
-	return;
-	}
-	currentIndex = currentIndex - 1;
-	document.getElementById('index').value = currentIndex;
-	changeImage(currentIndex);
-
-    }
-    else if (e.keyCode == '39') {
-	if((currentIndex + 1) > document.getElementById('index').max)
-	{
-		return;
-	}
-	currentIndex = currentIndex + 1;
-	document.getElementById('index').value = currentIndex;
-changeImage(currentIndex);
-	   // right arrow
-    }
-	else if (e.keyCode == '32'){
-	var originalMask = document.getElementById('originalMask');
-	originalMask.checked = !originalMask.checked;
-changeImage(currentIndex);	 
-	}
-		else if (e.keyCode == '188') {
-	if(document.getElementById("image1").style.opacity === document.getElementById("opacityControl").value)
-	{
-	document.getElementById("image1").style.opacity = 0;
-	}
-	else
-	{
-	document.getElementById("image1").style.opacity = document.getElementById("opacityControl").value;
-	}
-	
-    }
-			else if (e.keyCode == '80') {
-	if(document.getElementById("image2").classList.contains("zoom-img-pixelated"))
-	{
-		document.getElementById("image2").classList.remove("zoom-img-pixelated");
-		document.getElementById("image2").classList.add("zoom-img-hq");
-	}
-	else
-	{
-		document.getElementById("image2").classList.remove("zoom-img-hq");
-		document.getElementById("image2").classList.add("zoom-img-pixelated");
-	}
-	
-    }
-	
-
-}
+                    document.getElementById('originalMask').addEventListener('change', function(evt) { changeImage(currentIndex); });
 
 
-function imageGroup()
-{
-  if(this.id === "d" && this.checked)
-  {
-    prefix = 0
-  document.getElementById('index').max = 1999
-  document.getElementById('index').value = 1000;
-  
-  changeImage(1000);
-  }
-  else if(this.id === "h" && this.checked)
-  {
-  prefix = 2000
-  document.getElementById('index').max = 99
-  document.getElementById('index').value = 0;
-  
-  changeImage(0);
-  }
-}
+                });
+            document.addEventListener('DOMContentLoaded',
+                function() {
+                    var elems = document.querySelectorAll('select');
+                    var instances = M.FormSelect.init(elems, options);
+                });
+            document.onkeydown = checkKey;
 
-function changeImage(index)
-{
-	currentIndex = index;
-
-	document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[prefix+index].substring(5);
-	if(document.getElementById('originalMask').checked)
-	{
-		document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[prefix+index].substring(5);
-	}
-	else
-	{
-		document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[prefix+index];
-	}
-	  
-        M.toast({html: images[index]})
-}
-
-	function resetView()
-{
-	translateY = 0;
-	translateX = (window.innerWidth - document.getElementById("image1").getBoundingClientRect().width)/2;
-	currentScale = 1;
-	document.getElementById("image1").style.transform = `translate(${translateX}px, ${translateY}px)  scale(${1}) `;
-	document.getElementById("image2").style.transform = document.getElementById("image1").style.transform 
-        
-}
-	
-function imageLoaded()
-{
-if(currentScale === 1.0)
-{
-	orig_width = document.getElementById("image2").getBoundingClientRect().width;
-    orig_height = document.getElementById("image2").getBoundingClientRect().height;
-	}
-}
-
-
-	
-
-	
-	window.addEventListener("wheel", event => {
-	
-	const delta = event.wheelDelta / 120
-  const nextScale = currentScale + delta 
-
-zoomer.zoom(nextScale, event);
-    
-	});
-	
-document.getElementById('image1').addEventListener('mousedown', zoomer.start_drag);
-document.getElementById('image2').addEventListener('load', imageLoaded);
-document.getElementById('zoom-container').addEventListener('mousemove', zoomer.while_drag);
-document.getElementById('zoom-container').addEventListener('mouseup', zoomer.stop_drag);
-document.getElementById('zoom-container').addEventListener('mouseout', zoomer.stop_drag);
-document.getElementById('index').addEventListener('change', function(evt) {changeImage(Number(this.value))} );
-document.getElementById('image1').addEventListener("dblclick", event => {
-
-zoomer.zoom(0.25, event);
-    
-	});
-document.getElementById('prList').addEventListener('change', function(evt) {
-prHash = prWithAllImages[this.selectedIndex].headRefOid;
-images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image){
-	return image.path;
-});
-  document.getElementById('index').max = images.length-1;
-  document.getElementById('index').value = 0;
-      changeImage(0);
-
-
-document.getElementById('originalMask').addEventListener('change', function(evt) {	changeImage(currentIndex); } );	  
-  
-
-});
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, options);
-  });
-document.onkeydown = checkKey;
-
-})
-
+        })
 
 
 </script>
