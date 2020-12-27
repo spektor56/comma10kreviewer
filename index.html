@@ -118,14 +118,14 @@
             <input style="; margin: 0; padding: 0;" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
         </div>
         <div style="width:auto; margin: 0; padding: 0">
-            <a href="" onclick="location.href='https://erikbernheim.github.io/img-labeler' + '?imageNumber='+images[currentIndex].substring(5,4);return false;">Open Editor</a>
+            <a href="" onclick="location.href='https://erikbernheim.github.io/img-labeler' + '?imageNumber='+maskImages[currentIndex].substring(6,10);return false;">Open Editor</a>
         </div>
     </div>
 </div>
 </body>
 </html>
 <script>
-    var images = [];
+    var maskImages = [];
     var currentIndex = 0;
     document.addEventListener('DOMContentLoaded',
         (event) => {
@@ -379,15 +379,15 @@
                     var copyLink = "";
                     var copyMessage = "";
                     if (e.keyCode == '112') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied base image URL to clipboard";
                     }
                     else if (e.keyCode == '113') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[currentIndex];
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + maskImages[currentIndex];
                         copyMessage = "Copied PR segnet mask URL to clipboard";
                     }
                     else if (e.keyCode == '114') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied original segnet mask URL to clipboard";
                     }
 
@@ -406,14 +406,14 @@
             function changeImage(index) {
                 currentIndex = index;
 
-                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + images[index].substring(5);
+                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[index].substring(5);
                 if (document.getElementById('originalMask').checked) {
-                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + images[index].substring(5);
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[index].substring(5);
                 } else {
-                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + images[index];
+                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + maskImages[index];
                 }
                 M.Toast.dismissAll();
-                M.toast({ html: images[index] });
+                M.toast({ html: maskImages[index] });
             }
 
             function imageLoaded() {
@@ -449,10 +449,10 @@
             document.getElementById('prList').addEventListener('change',
                 function(evt) {
                     prHash = prWithAllImages[this.selectedIndex].headRefOid;
-                    images = prWithAllImages[this.selectedIndex].files.nodes.map(function(image) {
+                    maskImages = prWithAllImages[this.selectedIndex].files.nodes.map(function(image) {
                         return image.path;
                     });
-                    document.getElementById('index').max = images.length - 1;
+                    document.getElementById('index').max = maskImages.length - 1;
                     document.getElementById('index').value = 0;
                     changeImage(0);
 
