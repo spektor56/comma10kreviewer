@@ -118,14 +118,15 @@
             <input style="; margin: 0; padding: 0;" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
         </div>
         <div style="width:auto; margin: 0; padding: 0">
-            <a href="" onclick="location.href='https://erikbernheim.github.io/img-labeler' + '?imageNumber='+currentIndex;return false;">Open Editor</a>
+            <a href="" onclick="location.href='https://erikbernheim.github.io/img-labeler' + '?imageNumber='+images[currentIndex].substring(5);return false;">Open Editor</a>
         </div>
     </div>
 </div>
 </body>
 </html>
 <script>
-  
+    var images = [];
+    var currentIndex = 0;
     document.addEventListener('DOMContentLoaded',
         (event) => {
 
@@ -207,10 +208,10 @@
 
             });
 
-            var images = [];
+            
             var prHash = "";
 
-            var currentIndex = 1000;
+            
             var currentScale = 1.0,
                 orig_width = document.getElementById('image1').getBoundingClientRect().width,
                 orig_height = document.getElementById('image1').getBoundingClientRect().height;
