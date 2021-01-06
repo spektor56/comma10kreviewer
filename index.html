@@ -473,8 +473,8 @@
                     if (urlParams != null) {
                         const id = urlParams.get('index');
                         const pr = urlParams.get('pr');
-                        if (id != null && pr != null) {
-                            var newIndex = id;
+                        if (pr != null) {
+                            var newIndex = (id != null ? id : 0);
                             var optionIndex = 0;
                             var options = document.getElementById('prList').options;
                             for (var opt of options) {
