@@ -380,14 +380,19 @@
                     var copyLink = "";
                     var copyMessage = "";
                     if (e.keyCode == '112') {
+                        var prList = document.getElementById('prList');
+                        copyLink = location.toString().replace(location.search, "") + "?index=" + currentIndex + "&pr=" + prList.options[prList.selectedIndex].text;
+                        copyMessage = "Copied link to current view";
+                    }
+                    if (e.keyCode == '113') {
                         copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied base image URL to clipboard";
                     }
-                    else if (e.keyCode == '113') {
+                    else if (e.keyCode == '114') {
                         copyLink = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + maskImages[currentIndex];
                         copyMessage = "Copied PR segnet mask URL to clipboard";
                     }
-                    else if (e.keyCode == '114') {
+                    else if (e.keyCode == '115') {
                         copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied original segnet mask URL to clipboard";
                     }
@@ -468,6 +473,33 @@
                     var instances = M.FormSelect.init(elems, options);
                 });
             document.onkeydown = checkKey;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams != null) {
+                const id = urlParams.get('index');
+                const pr = urlParams.get('pr');
+                if (id != null && pr != null) {
+                    var newIndex = id;
+                    var optionIndex = 0;
+                    var options = document.getElementById('prList').options;
+                    for (var opt of options) {
+                        if (opt.text == pr) {
+                            break;
+                        }
+                        optionIndex++;
+                    }
+
+                    prHash = prWithAllImages[optionIndex].headRefOid;
+                    maskImages = prWithAllImages[optionIndex].files.nodes.map(function (image) {
+                        return image.path;
+                    });
+                    document.getElementById('index').max = maskImages.length - 1;
+                    document.getElementById('index').value = newIndex;
+                    changeImage(newIndex);
+
+                    document.getElementById('originalMask').addEventListener('change', function (evt) { changeImage(currentIndex); });
+                }
+            }
 
         })
 
