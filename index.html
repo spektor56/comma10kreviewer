@@ -398,26 +398,59 @@
                 });
             document.onkeydown = checkKey;
 
-            var query = `query reviewPR {
-  viewer {
-    login
-  }
-  repository(name: "comma10k", owner: "commaai") {
-    pullRequests(states: OPEN, first: 100) {
-      nodes {
-        baseRefOid
-        headRefOid
-        url
-        number
-        files(first: 100) {
-          nodes {
-            path
-          }
-        }
-      }
-    }
-  }
-}`;
+			var query='';
+			
+			const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams != null) {
+				const id = urlParams.get('index');
+                const pr = urlParams.get('pr');
+                if (pr != null) {
+					query = `query reviewPR {
+					  viewer {
+						login
+					  }
+					  repository(name: "comma10k", owner: "commaai") {
+						pullRequest(number: pr) {
+						  
+							baseRefOid
+							headRefOid
+							url
+							number
+							files(first: 100) {
+							  nodes {
+								path
+							  }
+							}
+						  
+						}
+					  }
+					}`;
+				}
+				else
+				{
+					query = `query reviewPR {
+					  viewer {
+						login
+					  }
+					  repository(name: "comma10k", owner: "commaai") {
+						pullRequests(states: OPEN, first: 100) {
+						  nodes {
+							baseRefOid
+							headRefOid
+							url
+							number
+							files(first: 100) {
+							  nodes {
+								path
+							  }
+							}
+						  }
+						}
+					  }
+					}`;
+				}
+			}
+
             var prWithAllImages = [];
             fetch('https://api.github.com/graphql',
                 {
@@ -469,13 +502,26 @@
                     // Log the API data
                     console.log('token', data);
 
-                    const urlParams = new URLSearchParams(window.location.search);
+					loadPullRequest();
+			
+                    
+
+                }).catch(function (err) {
+
+                    // Log any errors
+                    console.log('something went wrong', err);
+
+                });
+				
+				function loadPullRequest()
+				{
+					const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams != null) {
                         const id = urlParams.get('index');
                         const pr = urlParams.get('pr');
                         if (pr != null) {
                             var newIndex = (id != null ? Number(id) : 0);
-                            var optionIndex = 0;
+                            var optionIndex = -1;
                             var options = document.getElementById('prList').options;
                             for (var opt of options) {
                                 if (opt.text == pr) {
@@ -483,6 +529,10 @@
                                 }
                                 optionIndex++;
                             }
+							if(optionIndex < 1)
+							{
+								return false;
+							}
                             document.getElementById('prList').selectedIndex = optionIndex;
                             prHash = prWithAllImages[optionIndex].headRefOid;
                             maskImages = prWithAllImages[optionIndex].files.nodes.map(function (image) {
@@ -495,13 +545,8 @@
                             document.getElementById('originalMask').addEventListener('change', function (evt) { changeImage(currentIndex); });
                         }
                     }
-
-                }).catch(function (err) {
-
-                    // Log any errors
-                    console.log('something went wrong', err);
-
-                });
+					return true;
+				}
 
         })
 
