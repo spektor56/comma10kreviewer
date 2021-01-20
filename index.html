@@ -533,10 +533,11 @@
                             var optionIndex = -1;
                             var options = document.getElementById('prList').options;
                             for (var opt of options) {
+				    optionIndex++;
                                 if (opt.text == pr) {
                                     break;
                                 }
-                                optionIndex++;
+                                
                             }
 							if(optionIndex < 0)
 							{
