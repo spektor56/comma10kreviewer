@@ -511,20 +511,7 @@
                     // Log the API data
                     console.log('token', data);
 
-					loadPullRequest();
-			
-                    
-
-                }).catch(function (err) {
-
-                    // Log any errors
-                    console.log('something went wrong', err);
-
-                });
-				
-				function loadPullRequest()
-				{
-					const urlParams = new URLSearchParams(window.location.search);
+		const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams != null) {
                         const id = urlParams.get('index');
                         const pr = urlParams.get('pr');
@@ -541,7 +528,7 @@
                             }
 							if(optionIndex < 0)
 							{
-								return false;
+								return;
 							}
                             document.getElementById('prList').selectedIndex = optionIndex;
                             prHash = prWithAllImages[optionIndex].headRefOid;
@@ -555,8 +542,19 @@
                             document.getElementById('originalMask').addEventListener('change', function (evt) { changeImage(currentIndex); });
                         }
                     }
-					return true;
-				}
+			
+                    
+
+                }).catch(function (err) {
+
+                    // Log any errors
+                    console.log('something went wrong', err);
+
+                });
+				
+				
+					
+	
 
         })
 
