@@ -410,7 +410,7 @@
 						login
 					  }
 					  repository(name: "comma10k", owner: "commaai") {
-						pullRequest(number:` + pr + `) {
+						pullRequest(number: pr) {
 						  
 							baseRefOid
 							headRefOid
@@ -469,7 +469,11 @@
                 }).then(function (data) {
                     var re = /(?:\.([^.]+))?$/;
 
-
+					var prWithAllImages;
+					if(data.data.repository.pullRequests.nodes != null)
+					{
+					
+					
                     prWithAllImages =
                         data.data.repository.pullRequests.nodes.filter(
                             function (node) {
@@ -478,6 +482,11 @@
                                 )
                             }
                         );
+					}
+					else
+					{
+					  prWithAllImages = data.data.repository.pullRequest;
+					}
 
                     prWithAllImages.forEach(function (files) {
                         var opt = document.createElement("option");
