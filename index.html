@@ -128,6 +128,7 @@
     var maskImages = [];
     var currentIndex = 0;
     var prHash = "";
+	var originalHash = "";
     document.addEventListener('DOMContentLoaded',
         (event) => {
 
@@ -333,12 +334,22 @@
 
             }
 
+	    var prImage = false;
             function changeImage(index) {
                 currentIndex = index;
 
                 document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[index].substring(5);
                 if (document.getElementById('originalMask').checked) {
-                    document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[index].substring(5);
+			if(prImage)
+			{
+				document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + originalHash + "/" + maskImages[index];
+			}
+			else
+			{
+				document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[index].substring(5);
+			}
+                    
+			
                 } else {
                     document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + maskImages[index];
                 }
@@ -379,6 +390,7 @@
             document.getElementById('prList').addEventListener('change',
                 function(evt) {
                     prHash = prWithAllImages[this.selectedIndex].headRefOid;
+		    originalHash = prWithAllImages[this.selectedIndex].baseRefOid;
                     maskImages = prWithAllImages[this.selectedIndex].files.nodes.map(function(image) {
                         return image.path;
                     });
@@ -516,6 +528,7 @@
                         const id = urlParams.get('index');
                         const pr = urlParams.get('pr');
                         if (pr != null) {
+				
                             var newIndex = (id != null ? Number(id) : 0);
                             var optionIndex = -1;
                             var options = document.getElementById('prList').options;
@@ -530,7 +543,9 @@
 							{
 								return;
 							}
+				prImage = true;
                             document.getElementById('prList').selectedIndex = optionIndex;
+			originalHash = prWithAllImages[optionIndex].baseRefOid;
                             prHash = prWithAllImages[optionIndex].headRefOid;
                             maskImages = prWithAllImages[optionIndex].files.nodes.map(function (image) {
                                 return image.path;
