@@ -469,7 +469,7 @@
                 }).then(function (data) {
                     var re = /(?:\.([^.]+))?$/;
 
-					var prWithAllImages;
+					var prWithAllImages = [];
 					if(data.data.repository.pullRequests != null)
 					{
 					
@@ -485,7 +485,7 @@
 					}
 					else
 					{
-					  prWithAllImages = data.data.repository.pullRequest;
+					  prWithAllImages = [data.data.repository.pullRequest];
 					}
 
                     prWithAllImages.forEach(function (files) {
