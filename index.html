@@ -554,6 +554,14 @@
                             maskImages = prWithAllImages[optionIndex].files.nodes.map(function (image) {
                                 return image.path;
                             });
+
+                            if (maskImages.length > 0) {
+                                var folder = maskImages[0].split('/')[0];
+                                folderNumber = folder.substring(5);
+                            } else {
+                                folderNumber = "";
+                            }
+
                             document.getElementById('index').max = maskImages.length - 1;
                             document.getElementById('index').value = newIndex;
                             changeImage(newIndex);
