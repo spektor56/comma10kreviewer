@@ -313,7 +313,7 @@
                         copyMessage = "Copied link to current view";
                     }
                     if (e.keyCode == '113') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[currentIndex].substring(maskImages[currentIndex].indexOf('/'));
                         copyMessage = "Copied base image URL to clipboard";
                     }
                     else if (e.keyCode == '114') {
@@ -321,7 +321,7 @@
                         copyMessage = "Copied PR segnet mask URL to clipboard";
                     }
                     else if (e.keyCode == '115') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[currentIndex].substring(maskImages[currentIndex].indexOf('/'));
                         copyMessage = "Copied original segnet mask URL to clipboard";
                     }
 
@@ -341,13 +341,13 @@
             function changeImage(index) {
                 currentIndex = index;
 
-                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[index].substring(5);
+                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[index].substring(maskImages[index].indexOf('/'));
                 if (document.getElementById('originalMask').checked) {
                     if (prImage) {
                         document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + originalHash + "/" + maskImages[index];
                     }
                     else {
-                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[index].substring(5);
+                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[index].indexOf('/');
                     }
 
 
