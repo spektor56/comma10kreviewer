@@ -66,78 +66,81 @@
             width: 100%;
         }
 
-        #image2 { }
+        #image2 {
+        }
 
-        #image1 { opacity: 0.5; }
+        #image1 {
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body id="fullbody">
-<div style="display: flex; flex-flow: column; height: 100%; margin: 0; padding: 0">
-    <div id="zoom-container" style="display: flex;">
-        <div id="prListDiv" style="display: none" style="height: 100%; position: relative; width: 200px;">
+    <div style="display: flex; flex-flow: column; height: 100%; margin: 0; padding: 0">
+        <div id="zoom-container" style="display: flex;">
+            <div id="prListDiv" style="display: none" style="height: 100%; position: relative; width: 200px;">
 
-            <select id="prList" style="display: block; height: 100%" id="cars" size="55">
-
-            </select>
-        </div>
-        <div class="parent">
-            <div style="height: 100%; position: absolute; ;">
-                <img ondragstart="return false" id="image2" class="zoom-img-pixelated" style="user-select: none;"/>
+                <select id="prList" style="display: block; height: 100%" id="cars" size="55">
+                </select>
             </div>
-            <div id="maskContainer" style="height: 100%; position: absolute; ;">
-                <img ondragstart="return false" id="image1" class="mask-img" style="user-select: none;"/>
+            <div class="parent">
+                <div style="height: 100%; position: absolute; ;">
+                    <img ondragstart="return false" id="image2" class="zoom-img-pixelated" style="user-select: none;" />
+                </div>
+                <div id="maskContainer" style="height: 100%; position: absolute; ;">
+                    <img ondragstart="return false" id="image1" class="mask-img" style="user-select: none;" />
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div style="display: flex; flex-flow: row; height: 31px; margin: 0; padding: 0;">
+            <div style="margin: 0; padding: 0; width: 60px;">
+                <input id="index" style="height: 30px; margin: 0; padding: 0; width: 100%;" type="number" value="0" max="1999" min="0">
+            </div>
+
+            <div style="margin: 0; padding: 0; width: 100px;">
+
+                <label style="float: left">
+                    <input id="originalMask" type="checkbox" />
+                    <span style="padding-left: 25px">Original</span>
+                </label>
+
+            </div>
+
+
+            <div style="flex-grow: 1; margin: 0; padding: 0">
+                <input style="; margin: 0; padding: 0;" id="opacityControl" type="range" min="0" max="1" step="0.05" value="0.5" oninput="image1.style.opacity = opacityControl.value" />
+            </div>
+            <div style="flex-grow: 1; margin: 0; padding: 0">
+                <input style="; margin: 0; padding: 0;" id="brightnessControl" type="range" min="50" max="300" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
+            </div>
+            <div style="flex-grow: 1; margin: 0; padding: 0">
+                <input style="; margin: 0; padding: 0;" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
+            </div>
+            <div style="width:auto; margin: 0; padding: 0">
+                <a href="" onclick="window.open('https://erikbernheim.github.io/img-labeler' + '?imageNumber='+maskImages[currentIndex].substring(6,10) + '&showMask=https://raw.githubusercontent.com/commaai/comma10k/' + prHash + '/' + maskImages[currentIndex]);return false;">Open Editor</a>
             </div>
         </div>
-
-
     </div>
-
-
-    <div style="display: flex; flex-flow: row; height: 31px; margin: 0; padding: 0;">
-        <div style="margin: 0; padding: 0; width: 60px;">
-            <input id="index" style="height: 30px; margin: 0; padding: 0; width: 100%;" type="number" value="0" max="1999" min="0">
-        </div>
-
-        <div style="margin: 0; padding: 0; width: 100px;">
-
-            <label style="float: left">
-                <input id="originalMask" type="checkbox" />
-                <span style="padding-left: 25px">Original</span>
-            </label>
-
-        </div>
-
-
-        <div style="flex-grow: 1; margin: 0; padding: 0">
-            <input style="; margin: 0; padding: 0;" id="opacityControl" type="range" min="0" max="1" step="0.05" value="0.5" oninput="image1.style.opacity = opacityControl.value" />
-        </div>
-        <div style="flex-grow: 1; margin: 0; padding: 0">
-            <input style="; margin: 0; padding: 0;" id="brightnessControl" type="range" min="50" max="300" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
-        </div>
-        <div style="flex-grow: 1; margin: 0; padding: 0">
-            <input style="; margin: 0; padding: 0;" id="contrastControl" type="range" min="50" max="500" step="1" value="100" oninput="image2.style.filter = 'brightness('+brightnessControl.value+'%) contrast('+contrastControl.value+'%)'" />
-        </div>
-        <div style="width:auto; margin: 0; padding: 0">
-            <a href="" onclick="window.open('https://erikbernheim.github.io/img-labeler' + '?imageNumber='+maskImages[currentIndex].substring(6,10) + '&showMask=https://raw.githubusercontent.com/commaai/comma10k/' + prHash + '/' + maskImages[currentIndex]);return false;">Open Editor</a>
-        </div>
-    </div>
-</div>
 </body>
 </html>
 <script>
     var maskImages = [];
     var currentIndex = 0;
     var prHash = "";
-	var originalHash = "";
+    var originalHash = "";
+    var folderNumber = "";
     document.addEventListener('DOMContentLoaded',
         (event) => {
 
-            
 
-            
-            
 
-            
+
+
+
+
             var currentScale = 1.0,
                 orig_width = document.getElementById('image1').getBoundingClientRect().width,
                 orig_height = document.getElementById('image1').getBoundingClientRect().height;
@@ -145,7 +148,7 @@
             var translateY = 0;
 
 
-            var zoomer = (function() {
+            var zoomer = (function () {
                 var img_ele = null,
                     img_ele2 = null,
                     x_cursor = 0,
@@ -157,7 +160,7 @@
 
 
                 return {
-                    zoom: function(nextScale, event) {
+                    zoom: function (nextScale, event) {
 
                         var mask = document.getElementById('image1');
                         var image = document.getElementById('image2');
@@ -179,17 +182,17 @@
                         }
 
 
-/*			
-				if (translateY > 0)
-                {
-                    translateY =0;
-                }
-				
-                if (translateY < -(mask.getBoundingClientRect().height- orig_height))
-                {
-                    translateY = -(mask.getBoundingClientRect().height- orig_height)
-                }
-  */
+                        /*
+                                        if (translateY > 0)
+                                        {
+                                            translateY =0;
+                                        }
+
+                                        if (translateY < -(mask.getBoundingClientRect().height- orig_height))
+                                        {
+                                            translateY = -(mask.getBoundingClientRect().height- orig_height)
+                                        }
+                          */
 
                         mask.style.transform = `translate(${translateX}px, ${translateY}px) scale(${nextScale})`;
                         image.style.transform = mask.style.transform;
@@ -197,7 +200,7 @@
                         currentScale = nextScale;
                     },
 
-                    start_drag: function() {
+                    start_drag: function () {
 
 
                         img_ele = document.getElementById('image1');
@@ -209,7 +212,7 @@
 
                     },
 
-                    stop_drag: function() {
+                    stop_drag: function () {
 
                         if (img_ele !== null) {
                             translateX = (window.event.clientX - translateX);
@@ -219,7 +222,7 @@
                         img_ele = null;
                     },
 
-                    while_drag: function() {
+                    while_drag: function () {
 
                         if (img_ele !== null) {
                             var x_cursor = window.event.clientX;
@@ -310,7 +313,7 @@
                         copyMessage = "Copied link to current view";
                     }
                     if (e.keyCode == '113') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied base image URL to clipboard";
                     }
                     else if (e.keyCode == '114') {
@@ -318,11 +321,11 @@
                         copyMessage = "Copied PR segnet mask URL to clipboard";
                     }
                     else if (e.keyCode == '115') {
-                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[currentIndex].substring(5);
+                        copyLink = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[currentIndex].substring(5);
                         copyMessage = "Copied original segnet mask URL to clipboard";
                     }
 
-                   navigator.clipboard.writeText(copyLink).then(function () {
+                    navigator.clipboard.writeText(copyLink).then(function () {
                         M.Toast.dismissAll();
                         M.toast({ html: copyMessage });
                     }, function (err) {
@@ -334,22 +337,20 @@
 
             }
 
-	    var prImage = false;
+            var prImage = false;
             function changeImage(index) {
                 currentIndex = index;
 
-                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs/" + maskImages[index].substring(5);
+                document.getElementById("image2").src = "https://raw.githubusercontent.com/commaai/comma10k/master/imgs" + folderNumber + "/" + maskImages[index].substring(5);
                 if (document.getElementById('originalMask').checked) {
-			if(prImage)
-			{
-				document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + originalHash + "/" + maskImages[index];
-			}
-			else
-			{
-				document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks/" + maskImages[index].substring(5);
-			}
-                    
-			
+                    if (prImage) {
+                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + originalHash + "/" + maskImages[index];
+                    }
+                    else {
+                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[index].substring(5);
+                    }
+
+
                 } else {
                     document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + prHash + "/" + maskImages[index];
                 }
@@ -380,7 +381,7 @@
             document.getElementById('zoom-container').addEventListener('mousemove', zoomer.while_drag);
             document.getElementById('zoom-container').addEventListener('mouseup', zoomer.stop_drag);
             document.getElementById('zoom-container').addEventListener('mouseout', zoomer.stop_drag);
-            document.getElementById('index').addEventListener('change', function(evt) { changeImage(Number(this.value)) });
+            document.getElementById('index').addEventListener('change', function (evt) { changeImage(Number(this.value)) });
             document.getElementById('image1').addEventListener("dblclick",
                 event => {
                     const nextScale = currentScale + 0.25;
@@ -388,80 +389,86 @@
 
                 });
             document.getElementById('prList').addEventListener('change',
-                function(evt) {
+                function (evt) {
                     prHash = prWithAllImages[this.selectedIndex].headRefOid;
-		    originalHash = prWithAllImages[this.selectedIndex].baseRefOid;
-                    maskImages = prWithAllImages[this.selectedIndex].files.nodes.map(function(image) {
+                    originalHash = prWithAllImages[this.selectedIndex].baseRefOid;
+                    maskImages = prWithAllImages[this.selectedIndex].files.nodes.map(function (image) {
                         return image.path;
                     });
+                    if (maskImages.length > 0) {
+                        var folder = maskImages[0].split('/')[0];
+                        folderNumber = folder.substring(5);
+                    } else {
+                        folderNumber = "";
+                    }
+
                     document.getElementById('index').max = maskImages.length - 1;
                     document.getElementById('index').value = 0;
                     changeImage(0);
 
 
-                    document.getElementById('originalMask').addEventListener('change', function(evt) { changeImage(currentIndex); });
+                    document.getElementById('originalMask').addEventListener('change', function (evt) { changeImage(currentIndex); });
 
 
                 });
             document.addEventListener('DOMContentLoaded',
-                function() {
+                function () {
                     var elems = document.querySelectorAll('select');
                     var instances = M.FormSelect.init(elems, options);
                 });
             document.onkeydown = checkKey;
 
-			var query='';
-			
-			const urlParams = new URLSearchParams(window.location.search);
+            var query = '';
+
+            const urlParams = new URLSearchParams(window.location.search);
             if (urlParams != null) {
-				const id = urlParams.get('index');
+                const id = urlParams.get('index');
                 const pr = urlParams.get('pr');
                 if (pr != null) {
-					query = `query reviewPR {
-					  viewer {
-						login
-					  }
-					  repository(name: "comma10k", owner: "commaai") {
-						pullRequest(number: ` + pr + `) {
-						  
-							baseRefOid
-							headRefOid
-							url
-							number
-							files(first: 100) {
-							  nodes {
-								path
-							  }
-							}
-						  
-						}
-					  }
-					}`;
-				}
-				else
-				{
-					query = `query reviewPR {
-					  viewer {
-						login
-					  }
-					  repository(name: "comma10k", owner: "commaai") {
-						pullRequests(states: OPEN, first: 100) {
-						  nodes {
-							baseRefOid
-							headRefOid
-							url
-							number
-							files(first: 100) {
-							  nodes {
-								path
-							  }
-							}
-						  }
-						}
-					  }
-					}`;
-				}
-			}
+                    query = `query reviewPR {
+                      viewer {
+                        login
+                      }
+                      repository(name: "comma10k", owner: "commaai") {
+                        pullRequest(number: ` + pr + `) {
+
+                            baseRefOid
+                            headRefOid
+                            url
+                            number
+                            files(first: 100) {
+                              nodes {
+                                path
+                              }
+                            }
+
+                        }
+                      }
+                    }`;
+                }
+                else {
+                    query = `query reviewPR {
+                      viewer {
+                        login
+                      }
+                      repository(name: "comma10k", owner: "commaai") {
+                        pullRequests(states: OPEN, first: 100) {
+                          nodes {
+                            baseRefOid
+                            headRefOid
+                            url
+                            number
+                            files(first: 100) {
+                              nodes {
+                                path
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }`;
+                }
+            }
 
             var prWithAllImages = [];
             fetch('https://api.github.com/graphql',
@@ -481,24 +488,22 @@
                 }).then(function (data) {
                     var re = /(?:\.([^.]+))?$/;
 
-					
-					if(data.data.repository.pullRequests != null)
-					{
-					
-					
-                    prWithAllImages =
-                        data.data.repository.pullRequests.nodes.filter(
-                            function (node) {
-                                return node.files.nodes.every(
-                                    function (file) { return re.exec(file.path)[1] === 'png' }
-                                )
-                            }
-                        );
-					}
-					else
-					{
-					  prWithAllImages = [data.data.repository.pullRequest];
-					}
+
+                    if (data.data.repository.pullRequests != null) {
+
+
+                        prWithAllImages =
+                            data.data.repository.pullRequests.nodes.filter(
+                                function (node) {
+                                    return node.files.nodes.every(
+                                        function (file) { return re.exec(file.path)[1] === 'png' }
+                                    )
+                                }
+                            );
+                    }
+                    else {
+                        prWithAllImages = [data.data.repository.pullRequest];
+                    }
 
                     prWithAllImages.forEach(function (files) {
                         var opt = document.createElement("option");
@@ -523,29 +528,28 @@
                     // Log the API data
                     console.log('token', data);
 
-		const urlParams = new URLSearchParams(window.location.search);
+                    const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams != null) {
                         const id = urlParams.get('index');
                         const pr = urlParams.get('pr');
                         if (pr != null) {
-				
+
                             var newIndex = (id != null ? Number(id) : 0);
                             var optionIndex = -1;
                             var options = document.getElementById('prList').options;
                             for (var opt of options) {
-				    optionIndex++;
+                                optionIndex++;
                                 if (opt.text == pr) {
                                     break;
                                 }
-                                
+
                             }
-							if(optionIndex < 0)
-							{
-								return;
-							}
-				prImage = true;
+                            if (optionIndex < 0) {
+                                return;
+                            }
+                            prImage = true;
                             document.getElementById('prList').selectedIndex = optionIndex;
-			originalHash = prWithAllImages[optionIndex].baseRefOid;
+                            originalHash = prWithAllImages[optionIndex].baseRefOid;
                             prHash = prWithAllImages[optionIndex].headRefOid;
                             maskImages = prWithAllImages[optionIndex].files.nodes.map(function (image) {
                                 return image.path;
@@ -557,8 +561,8 @@
                             document.getElementById('originalMask').addEventListener('change', function (evt) { changeImage(currentIndex); });
                         }
                     }
-			
-                    
+
+
 
                 }).catch(function (err) {
 
@@ -566,10 +570,10 @@
                     console.log('something went wrong', err);
 
                 });
-				
-				
-					
-	
+
+
+
+
 
         })
 
