@@ -347,7 +347,7 @@
                         document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/" + originalHash + "/" + maskImages[index];
                     }
                     else {
-                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[index].indexOf('/');
+                        document.getElementById("image1").src = "https://raw.githubusercontent.com/commaai/comma10k/master/masks" + folderNumber + "/" + maskImages[index].substring(maskImages[index].indexOf('/'));
                     }
 
 
